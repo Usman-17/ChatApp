@@ -7,6 +7,8 @@ import dbConnect from "./db/ConnectMongoDB.js";
 import fileUpload from "express-fileupload";
 import { v2 as cloudinary } from "cloudinary";
 import { app, server } from "./lib/socket.js";
+
+import authRoutes from "./routes/auth.route.js";
 // imports End
 
 cloudinary.config({
@@ -39,6 +41,8 @@ app.use(
 app.get("/", (req, res) => {
   res.send("API is Working");
 });
+
+app.use("/api/auth", authRoutes);
 
 // Running App
 const PORT = process.env.PORT || 9000;
