@@ -9,6 +9,8 @@ import { v2 as cloudinary } from "cloudinary";
 import { app, server } from "./lib/socket.js";
 
 import authRoutes from "./routes/auth.route.js";
+import messageRoutes from "./routes/message.route.js";
+
 // imports End
 
 cloudinary.config({
@@ -43,6 +45,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/messages", messageRoutes);
 
 // Running App
 const PORT = process.env.PORT || 9000;
