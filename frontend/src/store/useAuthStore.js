@@ -107,4 +107,25 @@ export const useAuthStore = create((set, get) => ({
       set({ isUpdatingProfile: false });
     }
   },
+
+  logout: async () => {
+    try {
+      await axios.post("/api/auth/logout");
+      set({ authUser: null });
+      toast.success("Logged out successfully");
+
+      try {
+        get().disconnectSocket();
+      } catch (socketError) {
+        console.error("Socket connection error:", socketError);
+      }
+
+      return true;
+    } catch (error) {
+      const msg =
+        error.response?.data?.error || "Something went wrong during signup";
+      toast.error(msg);
+      return false;
+    }
+  },
 }));
