@@ -47,9 +47,9 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="grid lg:grid-cols-2 bg-base-100">
+    <div className="min-h-screen grid lg:grid-cols-2 bg-base-100">
       {/* Left Side */}
-      <div className="flex flex-col justify-center items-center p-6">
+      <div className="flex flex-col justify-center items-center p-6 sm:pt-20">
         <div className="w-full max-w-md space-y-8">
           {/* Logo & Title */}
           <div className="text-center">
@@ -65,7 +65,7 @@ const SignupPage = () => {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-3 mt-1 ">
+          <form onSubmit={handleSubmit} className="space-y-2 mt-2">
             {/* Full Name */}
             <div className="form-control w-full">
               <label className="label">
@@ -77,7 +77,8 @@ const SignupPage = () => {
                 name="fullName"
                 required="required"
                 value={formData.fullName}
-                placeholder="Enter your full name"
+                autoComplete="name"
+                placeholder="Ener your full name"
                 onChange={handleInputChange}
                 className="w-full p-2 border border-gray-500 rounded focus:outline-none focus:ring-2 focus:ring-gray-800 disabled:bg-gray-100 disabled:cursor-not-allowed text-sm"
               />
@@ -92,7 +93,8 @@ const SignupPage = () => {
               <input
                 type="email"
                 name="email"
-                placeholder="user@gmail.com"
+                autoComplete="email"
+                placeholder="user@example.com"
                 required="required"
                 onChange={handleInputChange}
                 value={formData.email}
@@ -110,6 +112,7 @@ const SignupPage = () => {
                 type="text"
                 inputMode="numeric"
                 name="mobile"
+                autoComplete="tel"
                 placeholder="03000000000"
                 pattern="03[0-9]{9}"
                 onChange={handleInputChange}
@@ -132,9 +135,9 @@ const SignupPage = () => {
                   type={isPasswordShow ? "text" : "password"}
                   name="password"
                   placeholder="••••••••"
+                  autoComplete="new-password"
                   minLength={8}
                   required="required"
-                  autoComplete="true"
                   onChange={handleInputChange}
                   value={formData.password}
                   className="w-full p-2 border border-gray-500 rounded focus:outline-none focus:ring-2 focus:ring-gray-800 disabled:bg-gray-100 disabled:cursor-not-allowed text-sm"
@@ -166,7 +169,7 @@ const SignupPage = () => {
 
               <Link
                 to="/login"
-                className="w-full text-whtie border border-primary hover:text-primary focus:outline-none focus:ring-4 focus:ring-gray-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition"
+                className="w-full text-whtie border border-primary hover:text-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition"
               >
                 Already have an account? Login
               </Link>

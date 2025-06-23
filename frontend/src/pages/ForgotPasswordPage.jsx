@@ -62,7 +62,7 @@ const ForgotPasswordPage = () => {
               <input
                 type="email"
                 name="email"
-                placeholder="user@gmail.com"
+                placeholder="user@example.com"
                 required="required"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}

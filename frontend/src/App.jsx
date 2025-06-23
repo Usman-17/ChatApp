@@ -55,10 +55,7 @@ const App = () => {
             element={!authUser ? <ForgotPasswordPage /> : <Navigate to="/" />}
           />
 
-          <Route
-            path="/settings"
-            element={authUser ? <SettingsPage /> : <Navigate to="/login" />}
-          />
+          <Route path="/settings" element={<SettingsPage />} />
 
           <Route
             path="/profile"

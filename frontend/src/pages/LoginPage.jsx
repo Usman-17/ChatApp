@@ -46,7 +46,7 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen grid lg:grid-cols-2 bg-base-100">
       {/* Left Side */}
-      <div className="flex flex-col justify-center items-center p-6 sm:p-12">
+      <div className="flex flex-col justify-center items-center p-6 sm:pt-12">
         <div className="w-full max-w-md space-y-8">
           {/* Logo & Title */}
           <div className="text-center">
@@ -72,8 +72,9 @@ const LoginPage = () => {
               <input
                 type="email"
                 name="email"
-                placeholder="user@gmail.com"
+                placeholder="user@example.com"
                 required="required"
+                autoComplete="email"
                 onChange={handleInputChange}
                 value={formData.email}
                 className="w-full p-2 border border-gray-500 rounded focus:outline-none focus:ring-2 focus:ring-gray-800 disabled:bg-gray-100 disabled:cursor-not-allowed text-sm"
@@ -103,8 +104,8 @@ const LoginPage = () => {
                   minLength={8}
                   required="required"
                   onChange={handleInputChange}
+                  autoComplete="current-password"
                   value={formData.password}
-                  autoComplete="true"
                   className="w-full p-2 border border-gray-500 rounded focus:outline-none focus:ring-2 focus:ring-gray-800 disabled:bg-gray-100 disabled:cursor-not-allowed text-sm"
                 />
 
