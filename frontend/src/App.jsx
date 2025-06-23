@@ -13,6 +13,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import SettingsPage from "./pages/SettingsPage";
+import ProfilePage from "./pages/ProfilePage";
 
 const App = () => {
   const { theme } = useThemeStore();
@@ -57,6 +58,11 @@ const App = () => {
           <Route
             path="/settings"
             element={authUser ? <SettingsPage /> : <Navigate to="/login" />}
+          />
+
+          <Route
+            path="/profile"
+            element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
           />
         </Routes>
 

@@ -86,4 +86,25 @@ export const useAuthStore = create((set, get) => ({
       set({ isForgotingPassword: false });
     }
   },
+
+  updateProfile: async (data) => {
+    set({ isUpdatingProfile: true });
+    try {
+      const res = await axios.put("/api/auth/profile/update", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      const updatedUser = res.data.user;
+      set({ authUser: updatedUser });
+      toast.success("Profile updated successfully");
+      return true;
+    } catch (error) {
+      const msg =
+        error.response?.data?.error || "Something went wrong during update";
+      toast.error(msg);
+      return false;
+    } finally {
+      set({ isUpdatingProfile: false });
+    }
+  },
 }));
