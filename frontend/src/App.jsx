@@ -4,13 +4,18 @@ import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { useAuthStore } from "./store/useAuthStore";
+import { useThemeStore } from "./store/useThemeStore";
+
+import Navbar from "./components/Navbar";
 
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import SettingsPage from "./pages/SettingsPage";
 
 const App = () => {
+  const { theme } = useThemeStore();
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
 
   useEffect(() => {
@@ -24,8 +29,10 @@ const App = () => {
       </div>
     );
   return (
-    <div>
+    <div data-theme={theme}>
       <BrowserRouter>
+        <Navbar />
+
         <Routes>
           <Route
             path="/"
@@ -45,6 +52,11 @@ const App = () => {
           <Route
             path="/forgot-password"
             element={!authUser ? <ForgotPasswordPage /> : <Navigate to="/" />}
+          />
+
+          <Route
+            path="/settings"
+            element={authUser ? <SettingsPage /> : <Navigate to="/login" />}
           />
         </Routes>
 
