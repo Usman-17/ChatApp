@@ -1,6 +1,7 @@
 import axios from "axios";
 import { create } from "zustand";
 import toast from "react-hot-toast";
+import { io } from "socket.io-client";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -19,6 +20,7 @@ export const useAuthStore = create((set, get) => ({
     try {
       const res = await axios.get("/api/auth/user");
       set({ authUser: res.data });
+      get().connectSocket();
     } catch {
       set({ authUser: null });
     } finally {
@@ -32,18 +34,11 @@ export const useAuthStore = create((set, get) => ({
       const res = await axios.post("/api/auth/signup", data);
       set({ authUser: res.data });
       toast.success("Account created successfully");
-
-      try {
-        get().connectSocket();
-      } catch (socketError) {
-        console.error("Socket connection error:", socketError);
-      }
-
+      get().connectSocket();
       return true;
     } catch (error) {
-      console.error("Signup error:", error);
       const msg =
-        error.response?.data?.error || "Something went wrong during signup";
+        error.response?.data?.message || "Something went wrong during signup";
       toast.error(msg);
       return false;
     } finally {
@@ -57,20 +52,31 @@ export const useAuthStore = create((set, get) => ({
       const res = await axios.post("/api/auth/login", data);
       set({ authUser: res.data });
 
-      try {
-        get().connectSocket();
-      } catch (socketError) {
-        console.error("Socket connection error:", socketError);
-      }
-
+      get().connectSocket();
       return true;
     } catch (error) {
       const msg =
-        error.response?.data?.error || "Something went wrong during signup";
+        error.response?.data?.message || "Something went wrong during signup";
       toast.error(msg);
       return false;
     } finally {
       set({ isLoggingIn: false });
+    }
+  },
+
+  logout: async () => {
+    try {
+      await axios.post("/api/auth/logout");
+      set({ authUser: null });
+
+      toast.success("Logged out successfully");
+      get().disconnectSocket();
+      return true;
+    } catch (error) {
+      const msg =
+        error.response?.data?.message || "Something went wrong during signup";
+      toast.error(msg);
+      return false;
     }
   },
 
@@ -80,7 +86,7 @@ export const useAuthStore = create((set, get) => ({
       await axios.post("/api/auth/forgot-password", data);
       return true;
     } catch (error) {
-      toast.error(error.response?.data?.error);
+      toast.error(error.response?.data?.message);
       return false;
     } finally {
       set({ isForgotingPassword: false });
@@ -108,24 +114,27 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
-  logout: async () => {
-    try {
-      await axios.post("/api/auth/logout");
-      set({ authUser: null });
-      toast.success("Logged out successfully");
+  connectSocket: () => {
+    const { authUser } = get();
+    if (!authUser || get().socket?.connected) return;
 
-      try {
-        get().disconnectSocket();
-      } catch (socketError) {
-        console.error("Socket connection error:", socketError);
-      }
+    const socket = io(BASE_URL, {
+      query: { userId: authUser._id },
+    });
+    socket.connect();
 
-      return true;
-    } catch (error) {
-      const msg =
-        error.response?.data?.error || "Something went wrong during signup";
-      toast.error(msg);
-      return false;
+    set({ socket: socket });
+
+    socket.on("getOnlineUsers", (userIds) => {
+      set({ onlineUsers: userIds });
+    });
+  },
+
+  disconnectSocket: () => {
+    const socket = get().socket;
+    if (socket) {
+      socket.disconnect();
+      set({ socket: null });
     }
   },
 }));
