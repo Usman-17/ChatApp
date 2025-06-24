@@ -5,9 +5,6 @@ import { io } from "socket.io-client";
 
 const BASE_URL = "https://chatapp-kav1.onrender.com";
 
-axios.defaults.baseURL = BASE_URL;
-axios.defaults.withCredentials = true;
-
 export const useAuthStore = create((set, get) => ({
   authUser: null,
   isSigningUp: false,
