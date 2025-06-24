@@ -11,6 +11,7 @@ export default defineConfig({
       "/api": {
         target: "https://chatapp-kav1.onrender.com",
         changeOrigin: true,
+        secure: false,
       },
     },
   },

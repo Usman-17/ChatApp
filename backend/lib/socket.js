@@ -7,18 +7,18 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:3000", "https://chatapp-vzob.onrender.com"],
+    origin: [process.env.FRONTEND_URL, "http://localhost:3000"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   },
 });
 
+// used to store Online users
+const userSocketMap = {};
+
 export function getReceiverSocketId(userId) {
   return userSocketMap[userId];
 }
-
-// used to store Online users
-const userSocketMap = {};
 
 io.on("connection", (socket) => {
   console.log("A user connected ", socket.id);
