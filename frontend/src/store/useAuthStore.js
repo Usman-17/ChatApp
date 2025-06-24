@@ -3,7 +3,10 @@ import { create } from "zustand";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 
-const BASE_URL = "https://chatapp-vzob.onrender.com";
+const BASE_URL = "https://chatapp-kav1.onrender.com";
+
+axios.defaults.baseURL = BASE_URL;
+axios.defaults.withCredentials = true;
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
@@ -13,7 +16,6 @@ export const useAuthStore = create((set, get) => ({
   isForgotingPassword: false,
   onlineUsers: [],
   socket: null,
-
   isCheckingAuth: true,
 
   checkAuth: async () => {
@@ -118,15 +120,22 @@ export const useAuthStore = create((set, get) => ({
     const { authUser } = get();
     if (!authUser || get().socket?.connected) return;
 
+    get().socket?.disconnect();
+
     const socket = io(BASE_URL, {
       query: { userId: authUser._id },
+      withCredentials: true,
     });
-    socket.connect();
 
-    set({ socket: socket });
+    socket.connect();
+    set({ socket });
 
     socket.on("getOnlineUsers", (userIds) => {
       set({ onlineUsers: userIds });
+    });
+
+    socket.on("connect_error", (err) => {
+      console.error("Socket connection error:", err.message);
     });
   },
 
