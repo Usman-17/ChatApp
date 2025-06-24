@@ -26,7 +26,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", process.env.FRONTEND_URL],
+    origin: ["http://localhost:3000", "https://chatapp-vzob.onrender.com"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })

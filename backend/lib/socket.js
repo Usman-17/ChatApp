@@ -7,7 +7,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:3000", process.env.FRONTEND_URL],
+    origin: ["http://localhost:3000", "https://chatapp-vzob.onrender.com"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   },
